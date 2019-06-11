@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHolderFichaje> {
 
 
     ArrayList<Fichaje> listaFichajes;
+
+
 
     public AdapterFichaje(ArrayList<Fichaje> listaFichajes) {
         this.listaFichajes = listaFichajes;
@@ -62,4 +67,20 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
 
         }
     }
+
+
+
+    //MÉTODO PARA CONVERTIR UN TIMESPAMP EN UN CHARSEQUENCE
+
+    public static CharSequence crearFecha (long timestamp) {
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTimeInMillis(timestamp);
+
+        Date d = calendario.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return sdf.format(d);
+    }
+
+
+
 }

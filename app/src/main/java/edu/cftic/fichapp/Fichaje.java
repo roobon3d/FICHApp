@@ -1,21 +1,30 @@
 package edu.cftic.fichapp;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Fichaje {
     private int id_fichaje;
-    private int id_empleado;
-    private String horaEntrada;
-    private String horaSalida;
+    private Empleado empleado;
+    private Timestamp fechainicio;
+    private Timestamp fechafin;
     private String mensaje;
 
-    public Fichaje(){
-
+    public Fichaje() {
     }
 
-    public Fichaje(int id_fichaje, int id_empleado, String horaEntrada, String horaSalida, String mensaje) {
+    public Fichaje(Empleado empleado, Timestamp fechainicio, Timestamp fechafin, String mensaje) {
+        this.empleado = empleado;
+        this.fechainicio = fechainicio;
+        this.fechafin = fechafin;
+        this.mensaje = mensaje;
+    }
+
+    public Fichaje(int id_fichaje, Empleado empleado, Timestamp fechainicio, Timestamp fechafin, String mensaje) {
         this.id_fichaje = id_fichaje;
-        this.id_empleado = id_empleado;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
+        this.empleado = empleado;
+        this.fechainicio = fechainicio;
+        this.fechafin = fechafin;
         this.mensaje = mensaje;
     }
 
@@ -27,28 +36,28 @@ public class Fichaje {
         this.id_fichaje = id_fichaje;
     }
 
-    public int getId_empleado() {
-        return id_empleado;
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    public void setId_empleado(int id_empleado) {
-        this.id_empleado = id_empleado;
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 
-    public String getHoraEntrada() {
-        return horaEntrada;
+    public Timestamp getFechainicio() {
+        return fechainicio;
     }
 
-    public void setHoraEntrada(String horaEntrada) {
-        this.horaEntrada = horaEntrada;
+    public void setFechainicio(Timestamp fechainicio) {
+        this.fechainicio = fechainicio;
     }
 
-    public String getHoraSalida() {
-        return horaSalida;
+    public Timestamp getFechafin() {
+        return fechafin;
     }
 
-    public void setHoraSalida(String horaSalida) {
-        this.horaSalida = horaSalida;
+    public void setFechafin(Timestamp fechafin) {
+        this.fechafin = fechafin;
     }
 
     public String getMensaje() {
@@ -57,5 +66,16 @@ public class Fichaje {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    @Override
+    public String toString() {
+        return "Fichaje{" +
+                "id_fichaje=" + id_fichaje +
+                ", empleado=" + empleado.getId_empleado() +
+                ", fechainicio=" + fechainicio +
+                ", fechafin=" + fechafin +
+                ", mensaje='" + mensaje + '\'' +
+                '}';
     }
 }
