@@ -1,5 +1,6 @@
 package edu.cftic.fichapp;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,50 +9,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+
+import edu.cftic.fichapp.bean.Fichaje;
 
 public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHolderFichaje> {
 
 
-    ArrayList<Fichaje> listaFichajes;
+    private ArrayList<Fichaje> listaFichajes; // datos a visualizar
+    private LayoutInflater inflador;
 
 
+    public AdapterFichaje(Context contexto, ArrayList<Fichaje> listaFichajes) {
+        inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    public AdapterFichaje(ArrayList<Fichaje> listaFichajes) {
         this.listaFichajes = listaFichajes;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolderFichaje onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list_fichaje,null,false);
-
-        return new ViewHolderFichaje(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolderFichaje holder, int i) {
-
-        holder.mensaje.setText(listaFichajes.get(i).getMensaje());
-
-        /*
-        //TODO ver como hacer esto
-        // Si es fichaje de entrada
-        holder.hora.setText(listaFichajes.get(i).getHoraEntrada());
-        holder.iconoEntradaSalida.setImageResource(R.drawable.entrada);
-        // Si es fichaje de salida
-        holder.hora.setText(listaFichajes.get(i).getHoraSalida());
-        holder.iconoEntradaSalida.setImageResource(R.drawable.salida);
-        */
-    }
-
-    @Override
-    public int getItemCount() {
-        return listaFichajes.size();
     }
 
     public class ViewHolderFichaje extends RecyclerView.ViewHolder {
@@ -68,11 +45,63 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
         }
     }
 
+    @NonNull
+    @Override
+    public ViewHolderFichaje onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list_fichaje,null,false);
+
+        return new ViewHolderFichaje(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolderFichaje holder, int posicion) {
+
+        holder.mensaje.setText(listaFichajes.get(posicion).getMensaje());
+
+
+
+
+        // Si es fichaje de entrada
+        if (listaFichajes.get(posicion).getFechafin()==null) {
+
+
+            Timestamp ts = listaFichajes.get(posicion).getFechainicio();
+            Date fecha = new Date();
+            fecha.setTime(ts.getTime());
+            String fechaFormateada = new SimpleDateFormat("HH:mm").format(fecha);
+
+
+            holder.hora.setText(fechaFormateada);
+            holder.iconoEntradaSalida.setImageResource(R.drawable.entrada);
+        } else {
+            // Si es fichaje de salida
+
+
+            Timestamp ts = listaFichajes.get(posicion).getFechafin();
+            Date fecha = new Date();
+            fecha.setTime(ts.getTime());
+            String fechaFormateada = new SimpleDateFormat("HH:mm").format(fecha);
+
+
+            holder.hora.setText(fechaFormateada);
+            holder.iconoEntradaSalida.setImageResource(R.drawable.salida);
+        }
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return listaFichajes.size();
+    }
+
+
+
 
 
     //MÉTODO PARA CONVERTIR UN TIMESPAMP EN UN CHARSEQUENCE
 
-    public static CharSequence crearFecha (long timestamp) {
+  /*  public static CharSequence crearFecha (long timestamp) {
         Calendar calendario = Calendar.getInstance();
         calendario.setTimeInMillis(timestamp);
 
@@ -81,6 +110,12 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
         return sdf.format(d);
     }
 
+    public static String getDateTimeFromTimeStamp(Long time, String mDateFormat) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(mDateFormat);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date dateTime = new Date(time);
+        return dateFormat.format(dateTime);
+    }*/
 
 
 }

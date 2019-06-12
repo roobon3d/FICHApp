@@ -35,7 +35,7 @@ public class FichajeActivity extends AppCompatActivity {
 
     private void construirRecycler() {
 
-        listaFichajes = new ArrayList<>();
+
 
         recyclerFichajes = (RecyclerView) findViewById(R.id.recyclerFichajesId);
 
@@ -52,7 +52,7 @@ public class FichajeActivity extends AppCompatActivity {
 
         //TODO Crear fichajes para pruebas
 
-
+/*
         Empresa em = new Empresa("B123456", "XYZYZ SA", "T T", "xyz@xyz.com");
         //boolean v = DB.empresas.nuevo(em);
         Empleado nu = DB.empleados.getEmpleadoUsuarioClave("", "");
@@ -61,21 +61,39 @@ public class FichajeActivity extends AppCompatActivity {
         Empleado tr = new Empleado("JUAN YONG 2", "JYON3", "12345", "B", false, em);
         boolean t = DB.empleados.nuevo(tr);
         ArrayList<Empleado> at = (ArrayList<Empleado>) DB.empleados.getEmpleados();
-
+        Empleado tr = new Empleado("JUAN YONG 2", "JYON3", "12345", "B", false, new Empresa("B123456", "XYZYZ SA", "T T", "xyz@xyz.com"));
         tr = DB.empleados.ultimo();
         Log.i(Constantes.TAG_APP, "E: " + tr);
-        for (Empleado es : at) {
-            Log.i(Constantes.TAG_APP, "= " + es);
-        }
-        at = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+
+        ArrayList<Empleado> at = (ArrayList<Empleado>) DB.empleados.getEmpleados();*/
+
+
+        Empleado tr = new Empleado("JUAN YONG 2", "JYON3", "12345", "B", false, new Empresa("B123456", "XYZYZ SA", "T T", "xyz@xyz.com"));
 
         Timestamp de = new Timestamp(new Date().getTime());
         Timestamp hasta = new Timestamp(new Date().getTime());
 
-        Fichaje fe = new Fichaje(tr, de, hasta, "Mensaje");
-        Log.i(Constantes.TAG_APP, "F: " + fe);
-        boolean d = DB.fichar.nuevo(fe);
-        ArrayList<Fichaje> af = (ArrayList<Fichaje>) DB.fichar.getFicheje(tr.getId_empleado());
+
+        listaFichajes = new ArrayList<>();
+
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+        listaFichajes.add(new Fichaje(tr, de, null, "Mensaje de entrada"));
+        listaFichajes.add(new Fichaje(tr, de, hasta, "Mensaje de salida"));
+
+
 
 
     }
