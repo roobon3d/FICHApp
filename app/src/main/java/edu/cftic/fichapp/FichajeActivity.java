@@ -44,7 +44,7 @@ public class FichajeActivity extends AppCompatActivity {
 
        // fichajesDesdeDB(u);
 
-        
+
 
         ArrayList<Fichaje> af = (ArrayList<Fichaje>) DB.fichar.getFicheje(u.getId_empleado());
 

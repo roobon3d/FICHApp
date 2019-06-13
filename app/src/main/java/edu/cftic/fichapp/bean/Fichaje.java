@@ -1,7 +1,6 @@
-package edu.cftic.fichapp;
+package edu.cftic.fichapp.bean;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Fichaje {
     private int id_fichaje;

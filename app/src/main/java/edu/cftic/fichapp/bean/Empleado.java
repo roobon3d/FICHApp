@@ -1,4 +1,4 @@
-package edu.cftic.fichapp;
+package edu.cftic.fichapp.bean;
 
 public class Empleado {
     private int id_empleado;

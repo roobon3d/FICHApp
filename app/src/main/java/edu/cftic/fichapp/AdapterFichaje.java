@@ -63,7 +63,7 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
 
 
         // Si es fichaje de entrada
-        if (listaFichajes.get(posicion).getFechafin()==null) {
+        if (listaFichajes.get(posicion).getFechafin().equals(new Timestamp(0))) {
 
 
             Timestamp ts = listaFichajes.get(posicion).getFechainicio();
