@@ -158,24 +158,16 @@ public class FichajeActivity extends AppCompatActivity {
             }
         });
 
+        
 
-
-
-
-
-
-  /*      int empleadoId = u.getId_empleado();
+       /*int empleadoId = u.getId_empleado();
 
         Fichaje ultimoFichaje = DB.fichar.getFichajeUltimo(empleadoId);
         Timestamp de = ultimoFichaje.getFechainicio();
         Timestamp hasta = ultimoFichaje.getFechainicio();
 
 
-
-
-       // fichajesDesdeDB(u);
-
-
+       fichajesDesdeDB(u);
 
         ArrayList<Fichaje> fee = (ArrayList<Fichaje>) DB.fichar.getFichaje(empleadoId, de, hasta);
         for(Fichaje es : fee){
@@ -231,6 +223,11 @@ public class FichajeActivity extends AppCompatActivity {
 
         recyclerFichajes.setAdapter(adapter);
 
+    }
+
+    public void añadirFichajeClick(View view) {
+
+        //TODO hacer intent a activity fichar
     }
 
 
