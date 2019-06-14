@@ -1,29 +1,55 @@
 package edu.cftic.fichapp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.util.Constantes;
+import edu.cftic.fichapp.util.Fecha;
 
 public class FichajeActivity extends AppCompatActivity {
 
     private ArrayList<Fichaje> listaFichajes;
     private ArrayList<Fichaje> listaFichajeAuxiliar;
 
+
     private RecyclerView recyclerFichajes;
     private RecyclerView.LayoutManager layoutManager;
+
+    private EditText fechaInicioEdTxt;
+    private EditText fechaFinEdTxt;
+    private Timestamp de , hasta;
+    private Button botonConsultar;
+    private Empleado u = null;
 
 
     @Override
@@ -31,48 +57,173 @@ public class FichajeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fichaje);
 
-        Empleado u = null;
 
 
-       // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
 
-        u = DB.empleados.ultimo();
-        int empleadoId = u.getId_empleado();
+        fechaInicioEdTxt = findViewById(R.id.fechaInicio);
+        fechaFinEdTxt = findViewById(R.id.fechaFin);
+        botonConsultar = findViewById(R.id.consultarBtn);
+        botonConsultar.setEnabled(false);
+        recyclerFichajes = (RecyclerView) findViewById(R.id.recyclerFichajesId);
+
+        u = DB.empleados.getEmpleadoId(2); // comentar esta linea y descomentar la siguiente cuando se integre el proyecto
+        // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
 
 
-        listaFichajes = (ArrayList<Fichaje>) DB.fichar.getFicheje(empleadoId);
+        fechaInicioEdTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        // +1 because january is zero
+                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        fechaInicioEdTxt.setText(selectedDate);
+
+                        de = new Timestamp(new Date().getTime());
+
+                        Calendar cc = new GregorianCalendar();
+                        cc.clear();
+                        cc.setTimeInMillis(de.getTime());
+                        cc.set(Calendar.YEAR,year);
+                        cc.set(Calendar.MONTH,month);
+                        cc.set(Calendar.DAY_OF_MONTH,day);
+
+                       de = Fecha.inicio(new Timestamp(cc.getTimeInMillis()));
+
+                       Log.d(Constantes.TAG_APP, " De = "+de);
+
+                       botonConsultar.setEnabled (!fechaInicioEdTxt.getText().toString().isEmpty() && !fechaFinEdTxt.getText().toString().isEmpty());
+
+
+                    }
+                });
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+
+
+            }
+        });
+
+        fechaFinEdTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        // +1 because january is zero
+                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        fechaFinEdTxt.setText(selectedDate);
+
+                        hasta = new Timestamp(new Date().getTime());
+
+                        Calendar cc = new GregorianCalendar();
+                        cc.clear();
+                        cc.setTimeInMillis(hasta.getTime());
+                        cc.set(Calendar.YEAR,year);
+                        cc.set(Calendar.MONTH,month);
+                        cc.set(Calendar.DAY_OF_MONTH,day);
+
+                        hasta = Fecha.fin(new Timestamp(cc.getTimeInMillis()));
+
+                        Log.d(Constantes.TAG_APP, " Hasta = "+hasta);
+
+                        botonConsultar.setEnabled (!fechaInicioEdTxt.getText().toString().isEmpty() && !fechaFinEdTxt.getText().toString().isEmpty());
+                    }
+                });
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+
+
+            }
+        });
+
+
+
+        botonConsultar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (de.after(hasta)){
+
+                    Toast.makeText(FichajeActivity.this, "Fecha inicio debe ser anterior a Fecha fin", Toast.LENGTH_LONG).show();
+
+                    return;
+
+                }
+
+                listaFichajes = (ArrayList<Fichaje>) DB.fichar.getFichaje(u.getId_empleado(),de,hasta);
+                construirRecycler();
+
+
+                Log.d("FichApp", "construir recycler");
+
+            }
+        });
+
+
+
+
+
+
+
+  /*      int empleadoId = u.getId_empleado();
+
+        Fichaje ultimoFichaje = DB.fichar.getFichajeUltimo(empleadoId);
+        Timestamp de = ultimoFichaje.getFechainicio();
+        Timestamp hasta = ultimoFichaje.getFechainicio();
+
+
+
 
        // fichajesDesdeDB(u);
 
 
 
-        ArrayList<Fichaje> af = (ArrayList<Fichaje>) DB.fichar.getFicheje(u.getId_empleado());
+        ArrayList<Fichaje> fee = (ArrayList<Fichaje>) DB.fichar.getFichaje(empleadoId, de, hasta);
+        for(Fichaje es : fee){
+            Log.i("APPK", "Fichaje :: "+es);
+        }*/
 
-        for(Fichaje f: af){
-            Log.d(Constantes.TAG_APP, "F = "+f);
-        }
 
-        construirRecycler();
-        Log.d("FichApp", "construir recycler");
     }
+
+
 
     private void fichajesDesdeDB(Empleado usuario) {
 
         for(int i=0;i<=10;i++){
 
-            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(0),"Entrada"));
-            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()),"Salida"));
+            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(0),"Entrada x"));
+            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()),"Salida x"));
 
         }
 
     }
 
 
+
     private void construirRecycler() {
 
+       Log.d (Constantes.TAG_APP,"fichajes= "+listaFichajes.size());
 
+        SimpleDateFormat sf = new SimpleDateFormat("d MMM yyyy, EEEE");
+        SimpleDateFormat sfd =  new SimpleDateFormat("yyyyMMdd");
 
-        recyclerFichajes = (RecyclerView) findViewById(R.id.recyclerFichajesId);
+        Map<String, ArrayList<Fichaje>> porDia = new TreeMap<String, ArrayList<Fichaje>>();
+        String dia;
+        ArrayList<Fichaje> sss = new ArrayList<>();
+       for(Fichaje ff : listaFichajes){
+           Log.d(Constantes.TAG_APP, "F = " + ff);
+          Log.d(Constantes.TAG_APP , "Dia : " + sf.format(ff.getFechainicio().getTime()));
+          dia = sfd.format(ff.getFechainicio().getTime());
+          if(porDia.containsKey(dia)){
+             sss.add(ff);
+           } else {
+              sss = null;
+          }
+          porDia.put(dia, sss );
+       }
+
+       // List<Person> peopleByAge = new ArrayList<>(people.values());
+
 
         recyclerFichajes.setLayoutManager(new LinearLayoutManager(this));
 
@@ -81,6 +232,8 @@ public class FichajeActivity extends AppCompatActivity {
         recyclerFichajes.setAdapter(adapter);
 
     }
+
+
 
   /*  private void fichajesPruebas()
     {
@@ -122,3 +275,16 @@ public class FichajeActivity extends AppCompatActivity {
 
 }
 
+
+class VerFichajeDia{
+    private Date dia;
+    private ArrayList<Fichaje> fichajesDia = new ArrayList<>();
+
+    public VerFichajeDia() {
+    }
+
+    public VerFichajeDia(Date dia, ArrayList<Fichaje> fichajesDia) {
+        this.dia = dia;
+        this.fichajesDia = fichajesDia;
+    }
+}

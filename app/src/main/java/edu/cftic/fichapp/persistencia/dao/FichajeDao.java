@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,9 @@ import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.esquemas.IFichajeEsquema;
 import edu.cftic.fichapp.persistencia.interfaces.IFichajeDao;
+import edu.cftic.fichapp.util.Fecha;
+
+
 
 public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
 
@@ -25,7 +30,7 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
     }
 
     @Override
-    public List<Fichaje> getFicheje(int id_empleado) {
+    public List<Fichaje> getFichaje(int id_empleado) {
         final String argumentos[] = { String.valueOf(id_empleado)};
         final String seleccion = F_COL_ID_EMPLEADO + " = ?";
         List<Fichaje> ee = new ArrayList<Fichaje>();
@@ -44,8 +49,30 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
 
     @Override
     public List<Fichaje> getFichaje(Timestamp desde, Timestamp hasta) {
-        final String argumentos[] = { String.valueOf(desde), String.valueOf(hasta) };
+        long de = Fecha.inicio(desde).getTime();
+        long al = Fecha.fin(hasta).getTime();
+        final String argumentos[] = { String.valueOf(de), String.valueOf(al) };
         final String seleccion = F_COL_INICIO + " >= ? AND " + F_COL_INICIO + " <= ?";
+        List<Fichaje> fichajeLista = new ArrayList<Fichaje>();
+        cursor = super.query(F_TABLA, F_COLUMNAS, seleccion, argumentos);
+        if(cursor != null){
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                Fichaje e = cursorATabla(cursor);
+                fichajeLista.add(e);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return fichajeLista;
+    }
+
+    @Override
+    public List<Fichaje> getFichaje(int id_empleado, Timestamp desde, Timestamp hasta) {
+        long de = Fecha.inicio(desde).getTime();
+        long al = Fecha.fin(hasta).getTime();
+        final String argumentos[] = { String.valueOf(id_empleado), String.valueOf(de), String.valueOf(al) };
+        final String seleccion = F_COL_ID_EMPLEADO + " = ? AND " + F_COL_INICIO + " >= ? AND " + F_COL_INICIO + " <= ?";
         List<Fichaje> fichajeLista = new ArrayList<Fichaje>();
         cursor = super.query(F_TABLA, F_COLUMNAS, seleccion, argumentos);
         if(cursor != null){

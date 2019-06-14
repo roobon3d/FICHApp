@@ -1,3 +1,4 @@
+/*
 package edu.cftic.fichapp;
 
 import android.support.annotation.NonNull;
@@ -21,3 +22,4 @@ public class FichajeViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
+*/
