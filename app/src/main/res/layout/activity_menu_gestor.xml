@@ -5,7 +5,8 @@
     android:id="@+id/menuGestorActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundcolor"
+    android:backgroundTint="@color/backgroundcolor"
+    android:background="@drawable/fonfologininferior"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
+        android:background="@drawable/fondogradienteheaders"
         android:gravity="center_horizontal|center_vertical"
         android:layout_gravity="center">
         <TextView
@@ -42,11 +44,11 @@
             android:elevation="6dp"
             app:cardCornerRadius="16dp"
             android:clickable="true"
+            android:onClick="editarEmpresaPulsado"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
                 android:id="@+id/datosEmpresaBtn"
-                android:onClick="editarEmpresaPulsado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -94,11 +96,12 @@
             android:elevation="6dp"
             app:cardCornerRadius="16dp"
             android:clickable="true"
+            android:onClick="editarEmpleadoPulsado"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
                 android:id="@+id/datosEmpleadoBtn"
-                android:onClick="editarEmpleadoPulsado"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
