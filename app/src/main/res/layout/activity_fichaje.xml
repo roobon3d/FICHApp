@@ -17,46 +17,58 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/empleadoNombreFicha"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_horizontal|start"
+            android:gravity="center_vertical|start"
             android:text="id/empleadoNombreFicha"
             android:textAlignment="textStart"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="end"
+            android:gravity="center_vertical"
             android:text="Añadir fichaje  "
             android:textAlignment="textEnd"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <ImageButton
+            android:id="@+id/btnAñadir"
+            android:onClick="añadirFichajeClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/formaovalcircular2"
             android:clickable="true"
             android:src="@drawable/add_fichaje"
+            android:elevation="2dp"
 
             />
     </LinearLayout>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="12dp"
+    android:layout_margin="5dp"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-
-        android:orientation="vertical">
+        android:background="@color/lightgray"
+        android:orientation="vertical"
+        android:padding="5dp">
 
 
         <android.support.design.widget.TextInputLayout
@@ -71,6 +83,7 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:hint="Fecha inicio"
+                android:textSize="14dp"
                 android:inputType="date"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -87,6 +100,7 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:hint="Fecha fin"
+                android:textSize="14dp"
                 android:inputType="date"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -95,9 +109,18 @@
             android:id="@+id/consultarBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Consultar Fichaje" />
+            android:text="Consultar Fichaje"
+            android:background="@drawable/formaboton1"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+            />
 
     </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
 
 
     <LinearLayout

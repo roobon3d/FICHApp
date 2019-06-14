@@ -1,0 +1,38 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners
+        android:bottomRightRadius="10dp"
+        android:radius="32dp" />
+
+    <gradient
+        android:angle="45"
+        android:centerX="0"
+        android:centerY="0"
+        android:endColor="@color/colorPrimaryDark"
+        android:gradientRadius="0"
+        android:startColor="@color/colorPrimary"
+        android:type="linear" />
+
+    <!--para color solido-->
+    <!--<solid
+        android:color="#FFFFFF" />-->
+
+
+<!--    <size
+        android:width="100dp"
+        android:height="16dp" />-->
+
+    <!--Usar android:dashWidth="2dp" and android:dashGap="2dp"
+    para añadir linea a trazos-->
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF" />
+
+ <padding
+         android:left="20dp"
+         android:top="5dp"
+         android:right="20dp"
+         android:bottom="5dp" />
+
+</shape>
