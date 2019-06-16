@@ -11,7 +11,7 @@
         android:centerY="0"
         android:endColor="@color/fondologo"
         android:gradientRadius="0"
-        android:startColor="@color/backgroundcolor"
+        android:startColor="@color/blanco"
         android:type="linear" />
 
     <!--para color solido-->

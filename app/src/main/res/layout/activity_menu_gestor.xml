@@ -171,7 +171,7 @@
                     android:background="@drawable/formaovalcircular1"
                     android:padding="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/horas_empleado_color" />
+                    android:src="@drawable/horasempleado" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,7 +266,6 @@
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -278,7 +277,7 @@
                     android:background="@drawable/formaovalcircular1"
                     android:padding="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/email_color" />
+                    android:src="@drawable/informe_pdf_email" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -328,7 +327,7 @@
                     android:background="@drawable/formaovalcircular1"
                     android:padding="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/horas_plantilla_color" />
+                    android:src="@drawable/horas_empleado_color" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#e9dd2d</color>
     <color name="colorPrimaryDark">#FFA000</color>
-    <color name="backgroundcolor">#E6FBFF</color>
+    <color name="backgroundcolor">#DAEEF3</color>
     <color name="lightgray">#ededed</color>
     <color name="deeppurple">#7c4dff</color>
     <color name="yellow">#FDEFCF</color>
