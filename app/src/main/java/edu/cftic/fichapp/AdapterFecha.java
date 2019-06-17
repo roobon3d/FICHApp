@@ -79,8 +79,6 @@ public class AdapterFecha extends RecyclerView.Adapter <AdapterFecha.ViewHolderF
             LinearLayoutManager hs_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false);
             holder.rViewHijo.setLayoutManager(hs_linearLayout);
             holder.rViewHijo.setVisibility(View.VISIBLE);
-
-
            // holder.rViewHijo.setHasFixedSize(true);
             AdapterFichaje hijoAdapter = new AdapterFichaje(this.activity,fichajeDelDia);
             holder.rViewHijo.setAdapter(hijoAdapter);

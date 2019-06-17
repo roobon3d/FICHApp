@@ -72,6 +72,7 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
 
 
             holder.hora.setText(fechaFormateada);
+            holder.mensaje.setText(listaFichajes.get(posicion).getMensaje());
             holder.iconoEntradaSalida.setImageResource(R.drawable.entrada);
         } else {
             // Si es fichaje de salida
@@ -84,6 +85,7 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
 
 
             holder.hora.setText(fechaFormateada);
+            holder.mensaje.setText(listaFichajes.get(posicion).getMensaje());
             holder.iconoEntradaSalida.setImageResource(R.drawable.salida);
         }
 

@@ -1,4 +1,4 @@
-/*
+
 package edu.cftic.fichapp;
 
 import android.app.Activity;
@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -110,17 +111,28 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         actualizarVista(tipoFichaje);
 
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
-*/
+    //creamos este metodo para que el ActionBar(la flecha hacia atras) funcione bien
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mimenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-*//*
-
+*/
 
     @Override
     protected void onResume() {
@@ -352,4 +364,4 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
 
 
     }
-}*/
+}

@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/formaovalcircular2"
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/add_fichaje"
             android:elevation="2dp"
 

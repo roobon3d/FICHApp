@@ -1,6 +1,7 @@
 package edu.cftic.fichapp;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import edu.cftic.fichapp.bean.Empleado;
+import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.util.Constantes;
@@ -41,6 +44,7 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
     private Timestamp de , hasta;
     private Button botonConsultar;
     private Empleado u = null;
+    private TextView empleadoNombre;
 
 
     @Override
@@ -49,18 +53,26 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consulta_fichaje);
 
 
-
-
+        // registramos todas las vistas del activity
+        empleadoNombre = findViewById(R.id.empleadoNombreFicha);
         fechaInicioEdTxt = findViewById(R.id.fechaInicio);
         fechaFinEdTxt = findViewById(R.id.fechaFin);
         botonConsultar = findViewById(R.id.consultarBtn);
         botonConsultar.setEnabled(false);
         recyclerFichajes = (RecyclerView) findViewById(R.id.recyclerFichajesId);
 
-        u = DB.empleados.getEmpleadoId(2); // comentar esta linea y descomentar la siguiente cuando se integre el proyecto
+
+        // Tomamos el usuario que recibiremos en un intent desde el login o desde el menu gestor
         // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+        u = DB.empleados.getEmpleadoId(2); // comentar esta linea y descomentar la anterior cuando se integre el proyecto
 
 
+
+        // Ponemos el nombre en el campo TextView "empleadoNombreFicha"
+        empleadoNombre.setText(u.getNombre());
+
+
+        //pedimos las fechas de inicio y fin de la consulta
         fechaInicioEdTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +144,8 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         botonConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Comprobamos que la fecha final es posterior a la fecha de inicio
                 if (de.after(hasta)){
 
                     Toast.makeText(ConsultaFichajeActivity.this, "Fecha inicio debe ser anterior a Fecha fin", Toast.LENGTH_LONG).show();
@@ -170,19 +184,6 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
 
 
 
-    private void fichajesDesdeDB(Empleado usuario) {
-
-        for(int i=0;i<=10;i++){
-
-            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(0),"Entrada x"));
-            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()),"Salida x"));
-
-        }
-
-    }
-
-
-
     private void construirRecycler() {
 
        Log.d (Constantes.TAG_APP,"fichajes= "+listaFichajes.size());
@@ -203,8 +204,6 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
           porDia.put(dia, tmpFichaje );
        }
 
-       // List<Person> peopleByAge = new ArrayList<>(people.values());
-
 
         recyclerFichajes.setLayoutManager(new LinearLayoutManager(this));
 
@@ -217,6 +216,28 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
     public void añadirFichajeClick(View view) {
 
         //TODO hacer intent a activity fichar
+        Intent intentFichar = new Intent(ConsultaFichajeActivity.this,RegistroEntradaSalida.class);
+        intentFichar.putExtra("ID_EMPLEADO",u.getId_empleado());
+
+        //Comprobar que estemos enviado lo correcto!!!!!!
+        intentFichar.putExtra(Constantes.EMPLEADO,u.getUsuario());
+
+
+        startActivity(intentFichar);
+    }
+
+
+    // Metodo para crear fichajes de prueba
+
+    private void fichajesDesdeDB(Empleado usuario) {
+
+        for(int i=0;i<=10;i++){
+
+            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(0),"Entrada x"));
+            DB.fichar.nuevo(new Fichaje(usuario,new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()),"Salida x"));
+
+        }
+
     }
 
 
@@ -225,8 +246,6 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
     {
 
         //TODO Crear fichajes para pruebas
-
-
 
 
         Empleado tr = new Empleado("JUAN YONG 2", "JYON3", "12345", "B", false, new Empresa("B123456", "XYZYZ SA", "T T", "xyz@xyz.com"));
