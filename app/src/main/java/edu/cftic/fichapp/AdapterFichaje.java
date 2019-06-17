@@ -3,6 +3,7 @@ package edu.cftic.fichapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
-import java.util.TimeZone;
+import java.util.Map;
 
 import edu.cftic.fichapp.bean.Fichaje;
 
@@ -57,12 +59,9 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
     @Override
     public void onBindViewHolder(@NonNull ViewHolderFichaje holder, int posicion) {
 
-        holder.mensaje.setText(listaFichajes.get(posicion).getMensaje());
 
 
-
-
-        // Si es fichaje de entrada
+      // Si es fichaje de entrada
         if (listaFichajes.get(posicion).getFechafin().equals(new Timestamp(0))) {
 
 
@@ -92,6 +91,7 @@ public class AdapterFichaje extends RecyclerView.Adapter <AdapterFichaje.ViewHol
 
     @Override
     public int getItemCount() {
+
         return listaFichajes.size();
     }
 

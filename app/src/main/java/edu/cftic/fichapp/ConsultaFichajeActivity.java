@@ -1,9 +1,6 @@
 package edu.cftic.fichapp;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,30 +13,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import edu.cftic.fichapp.bean.Empleado;
-import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Fecha;
 
-public class FichajeActivity extends AppCompatActivity {
+public class ConsultaFichajeActivity extends AppCompatActivity {
 
     private ArrayList<Fichaje> listaFichajes;
-    private ArrayList<Fichaje> listaFichajeAuxiliar;
+    private Map<String, ArrayList<Fichaje>> porDia;
 
 
     private RecyclerView recyclerFichajes;
@@ -55,7 +46,7 @@ public class FichajeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fichaje);
+        setContentView(R.layout.activity_consulta_fichaje);
 
 
 
@@ -76,7 +67,7 @@ public class FichajeActivity extends AppCompatActivity {
                 DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        // +1 because january is zero
+                        // +1 porque Enero es cero
                         final String selectedDate = day + " / " + (month+1) + " / " + year;
                         fechaInicioEdTxt.setText(selectedDate);
 
@@ -110,7 +101,7 @@ public class FichajeActivity extends AppCompatActivity {
                 DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        // +1 because january is zero
+                        // +1 porque Enero es cero
                         final String selectedDate = day + " / " + (month+1) + " / " + year;
                         fechaFinEdTxt.setText(selectedDate);
 
@@ -143,7 +134,7 @@ public class FichajeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (de.after(hasta)){
 
-                    Toast.makeText(FichajeActivity.this, "Fecha inicio debe ser anterior a Fecha fin", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ConsultaFichajeActivity.this, "Fecha inicio debe ser anterior a Fecha fin", Toast.LENGTH_LONG).show();
 
                     return;
 
@@ -196,22 +187,20 @@ public class FichajeActivity extends AppCompatActivity {
 
        Log.d (Constantes.TAG_APP,"fichajes= "+listaFichajes.size());
 
-        SimpleDateFormat sf = new SimpleDateFormat("d MMM yyyy, EEEE");
+       // SimpleDateFormat sf = new SimpleDateFormat("d MMM yyyy, EEEE");
         SimpleDateFormat sfd =  new SimpleDateFormat("yyyyMMdd");
 
-        Map<String, ArrayList<Fichaje>> porDia = new TreeMap<String, ArrayList<Fichaje>>();
+        porDia = new TreeMap<String, ArrayList<Fichaje>>();
         String dia;
-        ArrayList<Fichaje> sss = new ArrayList<>();
-       for(Fichaje ff : listaFichajes){
-           Log.d(Constantes.TAG_APP, "F = " + ff);
-          Log.d(Constantes.TAG_APP , "Dia : " + sf.format(ff.getFechainicio().getTime()));
-          dia = sfd.format(ff.getFechainicio().getTime());
+        ArrayList<Fichaje> tmpFichaje = new ArrayList<>();
+       for(Fichaje cadaFichaje : listaFichajes){
+          dia = sfd.format(cadaFichaje.getFechainicio().getTime());
           if(porDia.containsKey(dia)){
-             sss.add(ff);
+              tmpFichaje.add(cadaFichaje);
            } else {
-              sss = null;
+              tmpFichaje = new ArrayList<>();
           }
-          porDia.put(dia, sss );
+          porDia.put(dia, tmpFichaje );
        }
 
        // List<Person> peopleByAge = new ArrayList<>(people.values());
@@ -219,7 +208,7 @@ public class FichajeActivity extends AppCompatActivity {
 
         recyclerFichajes.setLayoutManager(new LinearLayoutManager(this));
 
-        AdapterFichaje adapter = new AdapterFichaje(this, listaFichajes);
+        AdapterFecha adapter = new AdapterFecha(this, porDia, ConsultaFichajeActivity.this);
 
         recyclerFichajes.setAdapter(adapter);
 
@@ -273,15 +262,3 @@ public class FichajeActivity extends AppCompatActivity {
 }
 
 
-class VerFichajeDia{
-    private Date dia;
-    private ArrayList<Fichaje> fichajesDia = new ArrayList<>();
-
-    public VerFichajeDia() {
-    }
-
-    public VerFichajeDia(Date dia, ArrayList<Fichaje> fichajesDia) {
-        this.dia = dia;
-        this.fichajesDia = fichajesDia;
-    }
-}
